@@ -1,16 +1,12 @@
 import dotenv from 'dotenv';
 import { createServer } from 'http';
-import { Sequelize } from 'sequelize';
 import app from './app.js';
-import sequelizeConfig from './config/config.js';
+import sequelize from './config/config.js';
 
 dotenv.config();
 
 const server = createServer(app);
 const port = 4000;
-
-// Initialize Sequelize
-const sequelize = new Sequelize(sequelizeConfig);
 
 const main = async () => {
   try {

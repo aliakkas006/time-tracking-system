@@ -1,0 +1,253 @@
+openapi: 3.0.0
+info:
+  version: '1'
+  title: Time Tracking System Rest API
+  description: 'This is the professional rest API project for time tracking system.'
+  contact:
+    name: Ali Akkas
+    url: https://aliakkas.com
+    email: help@ali.com
+servers:
+  - description: Dev
+    url: 'http://localhost:4000/api/v1'
+tags:
+  - name: Auth
+    description: Authentication Endpoints (public)
+
+paths:
+  '/auth/register':
+    post:
+      description: create a new account
+      tags: [Auth]
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Anisur Rahman
+                email:
+                  type: string
+                  format: email
+                  example: anis@gmail.com
+                password:
+                  type: string
+                  format: password
+                  example: Pass1$23
+              required: [name, email, password]
+      responses:
+        '201':
+          description: Account Created Successfully
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 201
+                  message:
+                    type: string
+                    example: register Successful
+                  data:
+                    type: object
+                    properties:
+                      access_token:
+                        type: string
+                        example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        example: '/auth/register'
+                      login:
+                        type: string
+                        example: '/auth/login'
+        '400':
+          $ref: '#/components/responses/400'
+        '500':
+          $ref: '#/components/responses/500'
+  '/auth/login':
+    post:
+      description: login to your account
+      tags: [Auth]
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: anis@gmail.com
+                password:
+                  type: string
+                  format: password
+                  example: Pass1$23
+              required: [email, password]
+      responses:
+        '200':
+          description: login Successful
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  message:
+                    type: string
+                    example: login Successful
+                  data:
+                    type: object
+                    properties:
+                      access_token:
+                        type: string
+                        example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        example: '/auth/login'
+        '400':
+          $ref: '#/components/responses/400'
+        '500':
+          $ref: '#/components/responses/500'
+  '/auth/logout':
+    post:
+      description: logout from account
+      tags: [Auth]
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw9p'
+              required: [token]
+      responses:
+        '200':
+          description: logout Successful
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  message:
+                    type: string
+                    example: Logout Successfully!
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        example: '/auth/logout'
+                      login:
+                        type: string
+                        example: '/auth/login'
+        '400':
+          $ref: '#/components/responses/400'
+        '500':
+          $ref: '#/components/responses/500'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  responses:
+    '500':
+      description: 'Internal Server Error'
+      content:
+        'application/json':
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+                example: 500
+              error:
+                type: string
+                example: Internal Server Error!
+              message:
+                type: string
+                example: We are sorry for the inconvenience. Please try again later...
+    '400':
+      description: 'Bad Request'
+      content:
+        'application/json':
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+                example: 400
+              error:
+                type: string
+                example: Bad Request
+              data:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    field:
+                      type: string
+                      example: input field's value
+                    message:
+                      type: string
+                      example: Invalid field's value
+                    in:
+                      type: string
+                      enum: [query, body]
+                      example: body
+    '401':
+      description: 'Unauthorized'
+      content:
+        'application/json':
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+                example: 401
+              error:
+                type: string
+                example: Unauthorized!
+              message:
+                type: string
+                example: You don't have the right permissions!
+    '404':
+      description: 'Resource Not Found'
+      content:
+        'application/json':
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+                example: 404
+              error:
+                type: string
+                example: Page Not Found!
+              message:
+                type: string
+                example: Requested resource not found!

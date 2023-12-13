@@ -1,9 +1,11 @@
 import express from 'express';
-import routes from './routes/index.js';
+import router from './routes/index.js';
+import applyMiddleware from './middleware/index.js';
 
 const app = express();
+applyMiddleware(app);
 
-app.use(routes);
+app.use('/api/v1', router);
 
 app.get('/health', (_req, res) => {
   res.send('Everything is OK!');
@@ -11,7 +13,7 @@ app.get('/health', (_req, res) => {
 
 // Global error handler
 app.use((err, _req, res, _next) => {
-  logger.error(err);
+  console.log(err);
   res.status(err.status || 500).json({
     message: err.message,
     errors: err.errors,
