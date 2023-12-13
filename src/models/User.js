@@ -25,10 +25,6 @@ const User = sequelize.define('User', {
     type: DataTypes.ENUM('user', 'admin'),
     defaultValue: 'user',
   },
-  status: {
-    type: DataTypes.ENUM('pending', 'approved', 'blocked'),
-    defaultValue: 'approved',
-  },
 });
 
 export default User;

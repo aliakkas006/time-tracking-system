@@ -17,11 +17,7 @@ const authenticate = async (req, _res, next) => {
     if (!userModel) {
       return next(authenticationError());
     }
-
-    if (userModel.status !== 'approved') {
-      return next(authenticationError(`Your account is ${userModel.status}`));
-    }
-
+    
     req.user = { ...userModel.toJSON(), id: userModel.id };
 
     next();

@@ -15,10 +15,13 @@ tags:
     description: Authentication Endpoints (public)
   - name: Time Entry
     description: Time Entry Endpoints (private)
+  - name: Weekly Timesheet
+    description: Weekly Timesheet Endpoints (private)
 
 paths:
   '/auth/register':
     post:
+      summary: Register a new account
       description: Create a new account
       tags: [Auth]
       requestBody:
@@ -75,6 +78,7 @@ paths:
           $ref: '#/components/responses/500'
   '/auth/login':
     post:
+      summary: Login to your account
       description: login to your account
       tags: [Auth]
       requestBody:
@@ -125,6 +129,7 @@ paths:
           $ref: '#/components/responses/500'
   '/auth/logout':
     post:
+      summary: Logout from your account
       description: logout from account
       tags: [Auth]
       requestBody:
@@ -165,8 +170,9 @@ paths:
           $ref: '#/components/responses/400'
         '500':
           $ref: '#/components/responses/500'
-  '/log':
+  '/time-entry':
     post:
+      summary: Log a new time entry
       security:
         - bearerAuth: []
       description: Authenticated users can log their daily working hours.
@@ -203,7 +209,7 @@ paths:
 
       responses:
         '201':
-          description: Time Entry Logged Successfully
+          description: Time Entry Logged Created Successfully
           content:
             'application/json':
               schema:
@@ -241,6 +247,7 @@ paths:
         '401':
           $ref: '#/components/responses/401'
     get:
+      summary: Retrieve a user's time entries
       security:
         - bearerAuth: []
       description: Authenticated users can view their time entries.
@@ -286,6 +293,68 @@ paths:
                           example: 'I worked on the new feature'
         '401':
           $ref: '#/components/responses/401'
+  '/weekly-timesheet':
+    get:
+      summary: Retrieve a user's weekly timesheet
+      description: Authenticated users can view their weekly timesheet.
+      tags: [Weekly Timesheet]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Weekly Timesheet Fetched Successfully
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  message:
+                    type: string
+                    example: log Successful
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        date:
+                          type: string
+                          format: date
+                          example: '2021-01-01'
+                        totalHours:
+                          type: string
+                          format: time
+                          example: '40:00:00'
+                        timeEntries:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                format: int32
+                                example: 1
+                              date:
+                                type: string
+                                format: date
+                                example: '2021-01-01'
+                              startTime:
+                                type: string
+                                format: time
+                                example: '09:00:00'
+                              endTime:
+                                type: string
+                                format: time
+                                example: '17:00:00'
+                              notes:
+                                type: string
+                                example: 'I worked on the new feature'
+        '401':
+          $ref: '#/components/responses/401'
+
 components:
   securitySchemes:
     bearerAuth:

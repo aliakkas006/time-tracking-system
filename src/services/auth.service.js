@@ -40,25 +40,12 @@ class AuthService {
       role: user.role,
     });
 
-    // For the second time login after the user logged out - update the user status (approved)
-    if (user.status === 'blocked') {
-      user.status = 'approved';
-      await user.save();
-    }
-
     return { accessToken, refreshToken };
   }
 
   static async logout({ token, clientIp }) {
     // revoke (invalidate) the refresh token
     const rToken = await tokenService.revokeRefreshToken({ token, clientIp });
-
-    // Find the user and blocked the user status
-    const user = await User.findByPk(rToken.userId);
-    if (user) {
-      user.status = 'blocked';
-      await user.save();
-    }
   }
 }
 

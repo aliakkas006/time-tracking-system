@@ -6,7 +6,7 @@ import authorize from '../middleware/authorize.js';
 const timeEntryRouter = Router();
 
 timeEntryRouter
-  .route('/log')
+  .route('/time-entry')
   .post(
     authenticate,
     authorize(['user', 'admin']),
@@ -14,7 +14,6 @@ timeEntryRouter
   )
   .get(
     authenticate,
-    authorize(['user', 'admin']),
     timeEntryController.viewTimeEntries
   );
 

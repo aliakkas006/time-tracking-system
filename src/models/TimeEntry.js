@@ -2,16 +2,21 @@ import { DataTypes } from 'sequelize';
 import sequelize from '../config/config.js';
 
 const TimeEntry = sequelize.define('TimeEntry', {
+  date: {
+    type: DataTypes.DATEONLY,
+    allowNull: false,
+  },
   startTime: {
-    type: DataTypes.DATE,
+    type: DataTypes.TIME,
     allowNull: false,
   },
   endTime: {
-    type: DataTypes.DATE,
+    type: DataTypes.TIME,
     allowNull: false,
   },
   notes: {
     type: DataTypes.STRING,
+    allowNull: true,
   },
 });
 
