@@ -13,11 +13,13 @@ servers:
 tags:
   - name: Auth
     description: Authentication Endpoints (public)
+  - name: Time Entry
+    description: Time Entry Endpoints (private)
 
 paths:
   '/auth/register':
     post:
-      description: create a new account
+      description: Create a new account
       tags: [Auth]
       requestBody:
         content:
@@ -163,7 +165,127 @@ paths:
           $ref: '#/components/responses/400'
         '500':
           $ref: '#/components/responses/500'
+  '/log':
+    post:
+      security:
+        - bearerAuth: []
+      description: Authenticated users can log their daily working hours.
+      tags: [Time Entry]
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              type: object
+              properties:
+                date:
+                  type: string
+                  format: date
+                  description: Date of the time entry
+                  example: '2023-12-01'
+                startTime:
+                  type: string
+                  format: time
+                  description: Start time of the working hours
+                  example: '09:00:00'
+                endTime:
+                  type: string
+                  format: time
+                  description: End time of the working hours
+                  example: '17:00:00'
+                notes:
+                  type: string
+                  description: Optional notes for the time entry
+                  example: 'I worked on the new feature'
+              required:
+                - date
+                - startTime
+                - endTime
 
+      responses:
+        '201':
+          description: Time Entry Logged Successfully
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 201
+                  message:
+                    type: string
+                    example: log Successful
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        format: int32
+                        example: 1
+                      date:
+                        type: string
+                        format: date
+                        example: '2021-01-01'
+                      startTime:
+                        type: string
+                        format: time
+                        example: '09:00:00'
+                      endTime:
+                        type: string
+                        format: time
+                        example: '17:00:00'
+                      notes:
+                        type: string
+                        example: 'I worked on the new feature'
+        '401':
+          $ref: '#/components/responses/401'
+    get:
+      security:
+        - bearerAuth: []
+      description: Authenticated users can view their time entries.
+      tags: [Time Entry]
+      responses:
+        '200':
+          description: Time Entries Fetched Successfully
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  message:
+                    type: string
+                    example: log Successful
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          format: int32
+                          example: 1
+                        date:
+                          type: string
+                          format: date
+                          example: '2021-01-01'
+                        startTime:
+                          type: string
+                          format: time
+                          example: '09:00:00'
+                        endTime:
+                          type: string
+                          format: time
+                          example: '17:00:00'
+                        notes:
+                          type: string
+                          example: 'I worked on the new feature'
+        '401':
+          $ref: '#/components/responses/401'
 components:
   securitySchemes:
     bearerAuth:

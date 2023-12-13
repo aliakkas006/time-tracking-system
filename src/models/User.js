@@ -2,6 +2,12 @@ import { DataTypes } from 'sequelize';
 import sequelize from '../config/config.js';
 
 const User = sequelize.define('User', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+    allowNull: false,
+  },
   name: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -20,8 +26,9 @@ const User = sequelize.define('User', {
     defaultValue: 'user',
   },
   status: {
-    type: DataTypes.ENUM('pending', 'approved', 'block')
-  }
+    type: DataTypes.ENUM('pending', 'approved', 'blocked'),
+    defaultValue: 'approved',
+  },
 });
 
 export default User;

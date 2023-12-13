@@ -13,6 +13,10 @@ class UserService {
   static async findUserByEmail(email) {
     return User.findOne({ where: { email } });
   }
+
+  static async getUserById(userId) {
+    return User.findByPk(userId);
+  }
 }
 
 export default UserService;
