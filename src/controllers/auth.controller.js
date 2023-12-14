@@ -1,5 +1,5 @@
 import authService from '../services/auth.service.js';
-import tokenService from '../services/token.service.js'
+import tokenService from '../services/token.service.js';
 
 class AuthController {
   /**
@@ -40,6 +40,8 @@ class AuthController {
    */
   static async login(req, res, next) {
     const { email, password } = req.body;
+    console.log('email: ', email);
+    console.log('password: ', password);
 
     try {
       const { accessToken, refreshToken } = await authService.login({
@@ -59,8 +61,6 @@ class AuthController {
           self: req.url,
         },
       };
-
-      console.log('login');
 
       res.status(200).json(response);
     } catch (err) {

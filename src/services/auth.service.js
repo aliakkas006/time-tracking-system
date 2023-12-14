@@ -46,6 +46,7 @@ class AuthService {
   static async logout({ token, clientIp }) {
     // revoke (invalidate) the refresh token
     const rToken = await tokenService.revokeRefreshToken({ token, clientIp });
+    return rToken;
   }
 }
 
