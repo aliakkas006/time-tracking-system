@@ -18,6 +18,10 @@ const TimeEntry = sequelize.define('TimeEntry', {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  UserId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
 });
 
 export default TimeEntry;

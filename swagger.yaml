@@ -266,7 +266,7 @@ paths:
                     example: 200
                   message:
                     type: string
-                    example: log Successful
+                    example: Time Entries Log Fetched Successfully
                   data:
                     type: array
                     items:
@@ -314,7 +314,7 @@ paths:
                     example: 200
                   message:
                     type: string
-                    example: log Successful
+                    example: Weekly Timesheet Fetched Successfully
                   data:
                     type: array
                     items:

@@ -4,9 +4,10 @@ import userService from '../services/user.service.js';
 class TimeEntryController {
   static async logTimeEntry(req, res, next) {
     const { date, startTime, endTime, notes } = req.body;
+    const { id } = req.user;
 
     try {
-      const currentUser = await userService.getUserById(req.user?.id);
+      const currentUser = await userService.getUserById(id);
 
       const timeEntry = await timeEntryService.logTimeEntry(
         date,
@@ -16,21 +17,36 @@ class TimeEntryController {
         currentUser.id
       );
 
-      res.status(201).json(timeEntry);
+      console.log('time entry: ', timeEntry);
+
+      const response = {
+        code: 201,
+        message: 'Time Entry Logged Successful!',
+        data: timeEntry,
+      };
+
+      res.status(201).json(response);
     } catch (err) {
       next(err);
     }
   }
 
   static async viewTimeEntries(req, res, next) {
+    const { id } = req.user;
     try {
-      const currentUser = await userService.getUserById(req.user.id);
+      const currentUser = await userService.getUserById(id);
 
       const timeEntries = await timeEntryService.getTimeEntriesByUserId(
         currentUser.id
       );
 
-      res.status(200).json(timeEntries);
+      const response = {
+        code: 200,
+        message: 'View time entries successful!',
+        data: timeEntries,
+      };
+
+      res.status(200).json(response);
     } catch (err) {
       next(err);
     }
