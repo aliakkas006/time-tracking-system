@@ -40,8 +40,6 @@ class AuthController {
    */
   static async login(req, res, next) {
     const { email, password } = req.body;
-    console.log('email: ', email);
-    console.log('password: ', password);
 
     try {
       const { accessToken, refreshToken } = await authService.login({

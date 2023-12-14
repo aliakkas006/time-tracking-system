@@ -17,7 +17,7 @@ const authenticate = async (req, _res, next) => {
     if (!userModel) {
       return next(authenticationError());
     }
-    
+
     req.user = { ...userModel.toJSON(), id: userModel.id };
 
     next();

@@ -2,14 +2,14 @@ import userService from '../services/user.service.js';
 import timeSheetService from '../services/timeSheet.service.js';
 
 class TimesheetController {
+  /**
+   * ---- Generate Weekly Timesheet Controller ----
+   */
   static async getWeeklyTimesheet(req, res, next) {
     const { id } = req.user;
     try {
       const currentUser = await userService.getUserById(id);
-
-      const weeklyTimesheet = await timeSheetService.getWeeklyTimesheet(
-        currentUser.id
-      );
+      const weeklyTimesheet = await timeSheetService.getWeeklyTimesheet(currentUser.id);
 
       const response = {
         code: 200,
